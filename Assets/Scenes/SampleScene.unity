@@ -731,6 +731,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forwardJumpKey: 32
   backwardJumpKey: 306
+  platforms: {fileID: 972470923}
 --- !u!4 &1036349608
 Transform:
   m_ObjectHideFlags: 0

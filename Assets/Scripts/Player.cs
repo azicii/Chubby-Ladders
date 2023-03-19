@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
     [SerializeField] KeyCode backwardJumpKey = KeyCode.LeftControl;
 
     Transform playerTransform;
+    Camera mainCamera;
+
+    public Platforms platforms;
 
     bool isGrounded;
     bool isFacingRight;
@@ -21,6 +24,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerTransform = GetComponentInChildren<PlayerBody>().gameObject.transform;
+        mainCamera = GetComponentInChildren<Camera>();
         isFacingRight = true;
     }
 
@@ -60,6 +64,13 @@ public class Player : MonoBehaviour
             vec = Vector3.right;
         }
         playerTransform.position += vec * forwardJumpDistance;
+
+        //Add another platform
+        platforms.AddNextPlatform();
+
+        //Follow the player with camera
+        mainCamera.transform.position += Vector3.up * verticalJumpDistance;
+        mainCamera.transform.position += vec * forwardJumpDistance;
     }
 
     void BackwardJump()
@@ -80,5 +91,12 @@ public class Player : MonoBehaviour
             vec = Vector3.right;
         }
         playerTransform.position += vec * forwardJumpDistance;
+
+        //Add another platform
+        platforms.AddNextPlatform();
+
+        //Follow the player with camera
+        mainCamera.transform.position += Vector3.up * verticalJumpDistance;
+        mainCamera.transform.position += vec * forwardJumpDistance;
     }
 }
