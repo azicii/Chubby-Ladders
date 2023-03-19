@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
         //Debug.Log(isGrounded);
 
         HandleJumps();
-
     }
 
     void HandleJumps()
