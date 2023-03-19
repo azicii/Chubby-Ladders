@@ -29,7 +29,6 @@ public class Player : MonoBehaviour
         //Debug.Log(isGrounded);
 
         HandleJumps();
-
     }
 
     void HandleJumps()
@@ -48,14 +47,15 @@ public class Player : MonoBehaviour
     void ForwardJump()
     {
         Debug.Log("Foward Jump!");
-        playerTransform.position += Vector3.right * (4.34f) + Vector3.up * verticalJumpDistance;
+
+        playerTransform.position += Vector3.right * forwardJumpDistance + Vector3.up * verticalJumpDistance;
     }
 
     void BackWardJump()
     {
         Debug.Log("Backward Jump!");
-        playerTransform.Rotate(0, 180, 0);
 
+        playerTransform.Rotate(0, 180, 0);
         playerTransform.position += -Vector3.right * forwardJumpDistance + Vector3.up * verticalJumpDistance;
     }
 }
