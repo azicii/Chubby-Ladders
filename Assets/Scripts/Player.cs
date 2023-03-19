@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     Transform playerTransform;
 
     bool isGrounded;
+    bool isFacingRight;
 
     float forwardJumpDistance = 4.34f;
     float verticalJumpDistance = 2.17f;
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerTransform = GetComponentInChildren<PlayerBody>().gameObject.transform;
+        isFacingRight = true;
     }
 
     void Update()
@@ -41,21 +43,43 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(backwardJumpKey) && isGrounded)
         {
-            BackWardJump();
+            BackwardJump();
         }
     }
 
     void ForwardJump()
     {
         Debug.Log("Foward Jump!");
-        playerTransform.position += Vector3.right * (4.34f) + Vector3.up * verticalJumpDistance;
+
+        //Move up one platform
+        playerTransform.position += Vector3.up * verticalJumpDistance;
+
+        //Move same direction
+        Vector3 vec = Vector3.left;
+        if (isFacingRight)
+        {
+            vec = Vector3.right;
+        }
+        playerTransform.position += vec * forwardJumpDistance;
     }
 
-    void BackWardJump()
+    void BackwardJump()
     {
         Debug.Log("Backward Jump!");
-        playerTransform.Rotate(0, 180, 0);
 
-        playerTransform.position += -Vector3.right * forwardJumpDistance + Vector3.up * verticalJumpDistance;
+        //Turn player around
+        playerTransform.Rotate(0, 180, 0);
+        isFacingRight = !isFacingRight;
+
+        //Move up one platform
+        playerTransform.position += Vector3.up * verticalJumpDistance;
+
+        //Move opposite direction
+        Vector3 vec = Vector3.left;
+        if (isFacingRight)
+        {
+            vec = Vector3.right;
+        }
+        playerTransform.position += vec * forwardJumpDistance;
     }
 }
