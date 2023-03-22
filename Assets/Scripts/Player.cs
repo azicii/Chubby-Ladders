@@ -24,7 +24,6 @@ public class Player : MonoBehaviour
     public bool gameOver = false;
 
     [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] TextMeshProUGUI instructions;
 
     float forwardJumpDistance = 4.34f;
     float verticalJumpDistance = 2.17f;
@@ -33,7 +32,7 @@ public class Player : MonoBehaviour
     {
         playerTransform = GetComponentInChildren<PlayerBody>().gameObject.transform;
         playerUI = GetComponent<PlayerUI>();
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponentInChildren<Rigidbody>();
 
         isGrounded = true;
 
@@ -135,6 +134,7 @@ public class Player : MonoBehaviour
         if (!isGrounded)
         {
             rb.isKinematic = false;
+            rb.useGravity = true;
             gameOver = true;
             Debug.Log($"this thing is gameover" + gameOver);
             
