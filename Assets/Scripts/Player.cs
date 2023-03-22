@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
 
     Transform playerTransform;
     PlayerUI playerUI;
-    Camera mainCamera;
     Rigidbody rb;
     
 
@@ -34,7 +33,6 @@ public class Player : MonoBehaviour
     {
         playerTransform = GetComponentInChildren<PlayerBody>().gameObject.transform;
         playerUI = GetComponent<PlayerUI>();
-        mainCamera = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
 
         isGrounded = true;
@@ -80,10 +78,6 @@ public class Player : MonoBehaviour
         //Add another platform
         platforms.AddNextPlatform();
 
-        //Follow the player with camera
-        mainCamera.transform.position += Vector3.up * verticalJumpDistance;
-        mainCamera.transform.position += vec * forwardJumpDistance;
-
         //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
         isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
         Debug.Log(isGrounded);
@@ -120,10 +114,6 @@ public class Player : MonoBehaviour
 
         //Add another platform
         platforms.AddNextPlatform();
-
-        //Follow the player with camera
-        mainCamera.transform.position += Vector3.up * verticalJumpDistance;
-        mainCamera.transform.position += vec * forwardJumpDistance;
 
         //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
         isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
