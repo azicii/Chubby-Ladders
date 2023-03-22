@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [Header("Keybinds")]
     [SerializeField] KeyCode forwardJumpKey = KeyCode.Space;
     [SerializeField] KeyCode backwardJumpKey = KeyCode.LeftControl;
+    [SerializeField] KeyCode restartKey = KeyCode.R;
 
     Transform playerTransform;
     PlayerUI playerUI;
@@ -36,17 +37,16 @@ public class Player : MonoBehaviour
         mainCamera = GetComponentInChildren<Camera>();
         rb = GetComponent<Rigidbody>();
 
+        isGrounded = true;
+
         isFacingRight = true;
     }
 
     void Update()
     {
-        //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
-        isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
-        Debug.Log(isGrounded);
-
         HandleJumps();
-        CheckGameOver();
+
+        HandleRespawn();
     }
 
     void HandleJumps()
@@ -84,6 +84,14 @@ public class Player : MonoBehaviour
         mainCamera.transform.position += Vector3.up * verticalJumpDistance;
         mainCamera.transform.position += vec * forwardJumpDistance;
 
+        //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
+        isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
+        Debug.Log(isGrounded);
+
+        CheckGameOver();
+
+        if (gameOver) return;
+
         //Add to score
         playerUI.AddPoint();
 
@@ -117,6 +125,14 @@ public class Player : MonoBehaviour
         mainCamera.transform.position += Vector3.up * verticalJumpDistance;
         mainCamera.transform.position += vec * forwardJumpDistance;
 
+        //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
+        isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
+        Debug.Log(isGrounded);
+
+        CheckGameOver();
+
+        if (gameOver) return;
+
         //Add to score
         playerUI.AddPoint();
 
@@ -130,8 +146,20 @@ public class Player : MonoBehaviour
         {
             rb.isKinematic = false;
             gameOver = true;
+            Debug.Log($"this thing is gameover" + gameOver);
             
             playerUI.ShowGameOverScreen();
+        }
+    }
+
+    void HandleRespawn()
+    {
+        if (gameOver)
+        {
+            if (Input.GetKeyDown(restartKey))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            }
         }
     }
 }

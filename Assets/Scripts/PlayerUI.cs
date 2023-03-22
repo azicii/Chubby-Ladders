@@ -11,7 +11,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI instructions;
     int rawScore = 0;
 
-    [SerializeField] Canvas gameOverScreen;
+    [SerializeField] GameObject gameOverScreen;
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class PlayerUI : MonoBehaviour
     {
         if (player.gameOver)
         {
-            gameOverScreen.enabled = true;
+            gameOverScreen.SetActive(true);
         }
     }
 }
