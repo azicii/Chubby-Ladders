@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class PlayerUI : MonoBehaviour
@@ -9,15 +10,25 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI score;
     [SerializeField] TextMeshProUGUI instructions;
-    int rawScore = 0;
+    [SerializeField] Slider timerSlider;
+
+    public int rawScore = 0;
 
     [SerializeField] GameObject gameOverScreen;
+
+    // Timer
+    float timerSecLeft;
+    float timerMaxSec;
 
     private void Start()
     {
         player = GetComponent<Player>();
+        timerSlider.value = 1;
+    }
 
-        AddPoint();
+    private void Update()
+    {
+        HandleTimer();
     }
 
     public void RemoveInstructions()
@@ -44,5 +55,31 @@ public class PlayerUI : MonoBehaviour
         {
             gameOverScreen.SetActive(true);
         }
+    }
+
+    private void HandleTimer()
+    {
+        if (timerMaxSec == 0) return;
+
+        timerSecLeft -= Time.deltaTime;
+
+        if (timerSecLeft <= 0)
+        {
+            player.SetGameOver();
+
+            timerMaxSec = 0;
+            timerSecLeft = 0;
+            timerSlider.value = 0;
+
+            return;
+        }
+
+        timerSlider.value = timerSecLeft / timerMaxSec;
+    }
+
+    public void StartTimer(float sec)
+    {
+        timerMaxSec = sec;
+        timerSecLeft = sec;
     }
 }

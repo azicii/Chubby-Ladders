@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
 
     float forwardJumpDistance = 4.34f;
     float verticalJumpDistance = 2.17f;
+    readonly float[] timerMaxSecs = { 3f, 2f, 1f };
+    readonly int platformsPerLevel = 10;
+
 
     void Start()
     {
@@ -88,6 +91,14 @@ public class Player : MonoBehaviour
         //Add to score
         playerUI.AddPoint();
 
+        //Start timer countdown
+        int timerInd = playerUI.rawScore / 10;
+        if (timerInd >= timerMaxSecs.Length)
+        {
+            timerInd = timerMaxSecs.Length - 1;
+        }
+        playerUI.StartTimer(timerMaxSecs[timerInd]);
+
         //Remove instructions
         playerUI.RemoveInstructions();
     }
@@ -125,6 +136,14 @@ public class Player : MonoBehaviour
         //Add to score
         playerUI.AddPoint();
 
+        //Start timer countdown
+        int timerInd = playerUI.rawScore / platformsPerLevel;
+        if (timerInd >= timerMaxSecs.Length)
+        {
+            timerInd = timerMaxSecs.Length - 1;
+        }
+        playerUI.StartTimer(timerMaxSecs[timerInd]);
+
         //Remove instructions
         playerUI.RemoveInstructions();
     }
@@ -135,10 +154,7 @@ public class Player : MonoBehaviour
         {
             rb.isKinematic = false;
             rb.useGravity = true;
-            gameOver = true;
-            Debug.Log($"this thing is gameover" + gameOver);
-            
-            playerUI.ShowGameOverScreen();
+            SetGameOver();
         }
     }
 
@@ -151,5 +167,11 @@ public class Player : MonoBehaviour
                 UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             }
         }
+    }
+
+    public void SetGameOver()
+    {
+        gameOver = true;
+        playerUI.ShowGameOverScreen();
     }
 }
