@@ -26,8 +26,8 @@ public class Platforms : MonoBehaviour
         Platform lastPlatform = allPlatforms.Last();
         Platform newPlatform = allPlatforms.First();
         allPlatforms.RemoveAt(0);
-        newPlatform.gameObject.transform.position = lastPlatform.gameObject.transform.position;
         Transform transform = newPlatform.gameObject.transform;
+        transform.position = lastPlatform.gameObject.transform.position;
 
         //Move platform up
         transform.position += Vector3.up * verticalJumpDistance;

@@ -53,63 +53,23 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(forwardJumpKey) && isGrounded)
         {
-            ForwardJump();
+            Jump(true);
         }
 
         if (Input.GetKeyDown(backwardJumpKey) && isGrounded)
         {
-            BackwardJump();
+            Jump(false);
         }
     }
 
-    void ForwardJump()
+    void Jump(bool isForward)
     {
-        Debug.Log("Foward Jump!");
-
-        //Move up one platform
-        playerTransform.position += Vector3.up * verticalJumpDistance;
-
-        //Move same direction
-        Vector3 vec = Vector3.left;
-        if (isFacingRight)
+        if (!isForward)
         {
-            vec = Vector3.right;
+            //Turn player around
+            playerTransform.Rotate(0, 180, 0);
+            isFacingRight = !isFacingRight;
         }
-        playerTransform.position += vec * forwardJumpDistance;
-
-        //Add another platform
-        platforms.AddNextPlatform();
-
-        //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
-        isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
-        Debug.Log(isGrounded);
-
-        CheckGameOver();
-
-        if (gameOver) return;
-
-        //Add to score
-        playerUI.AddPoint();
-
-        //Start timer countdown
-        int timerInd = playerUI.rawScore / 10;
-        if (timerInd >= timerMaxSecs.Length)
-        {
-            timerInd = timerMaxSecs.Length - 1;
-        }
-        playerUI.StartTimer(timerMaxSecs[timerInd]);
-
-        //Remove instructions
-        playerUI.RemoveInstructions();
-    }
-
-    void BackwardJump()
-    {
-        Debug.Log("Backward Jump!");
-
-        //Turn player around
-        playerTransform.Rotate(0, 180, 0);
-        isFacingRight = !isFacingRight;
 
         //Move up one platform
         playerTransform.position += Vector3.up * verticalJumpDistance;
@@ -127,7 +87,6 @@ public class Player : MonoBehaviour
 
         //Sends a ray below player to check it platform collider is below. Returns true if collider is present.
         isGrounded = Physics.Raycast(playerTransform.position, Vector3.down, (playerHeight));
-        Debug.Log(isGrounded);
 
         CheckGameOver();
 
